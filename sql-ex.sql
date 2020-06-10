@@ -46,7 +46,7 @@ where x.displacement = z.displacement
 
 select distinct name 
 from ships as s
-join classes as c on s.class=c.class
+join classes as c on s.class = c.class
 where (c.type = 'bb' or
         c.type is null
     )
@@ -71,7 +71,7 @@ select i.point
     ,'inc' as operation
     ,sum(inc) as money_sum 
 from income as i 
-left join outcome as o on i.point=o.point 
+left join outcome as o on i.point = o.point 
     and i.date = o.date
 where o.out is null
 group by i.point
@@ -82,7 +82,7 @@ select o1.point
     ,'out' as operation
     ,sum(out) as money_sum 
 from outcome as o1 
-left join income as i1 on o1.point=i1.point
+left join income as i1 on o1.point = i1.point
     and o1.date = i1.date
 where i1.inc is null 
 group by o1.point
@@ -183,7 +183,7 @@ where country='Russia'
         select country
             ,class
         from classes
-        where country='Russia'
+        where country = 'Russia'
     )
 union
 select country
@@ -199,7 +199,7 @@ where not exists (
 
 --Задание: 75
 
-with x as(
+with x as (
     select maker
         ,price as lap
         ,null as pc
@@ -488,14 +488,14 @@ having count(model) >= all(
 
 select maker
     ,model
-    ,type 
+    ,type
 from (
     select *
         ,row_number () over (order by model) as a
         ,row_number() over (order by model desc) as b
     from product
 ) as x
-where a > 3 
+where a > 3
     and b >3
 
 
@@ -504,7 +504,7 @@ where a > 3
 select cast(sum(a.b) / count (a.b) as numeric(12,2)) as avg_paint
 from (
     select distinct q_name
-        ,sum(cast (isnull(b_vol, 0) as float)) as b 
+        ,sum(cast (isnull(b_vol, 0) as float)) as b
     from utQ as q
     left join utB as u on q.q_id = u.b_q_id
     group by q_name
@@ -608,7 +608,7 @@ left join (
     select date
     ,point
     ,inc
-    ,row_number() over (partition by date order by code) as code1 
+    ,row_number() over (partition by date order by code) as code1
     from income
 ) as i on x.date = i.date
     and x.code = i.code1
@@ -616,7 +616,7 @@ left join (
     select date
         ,point
         ,out
-        ,row_number() over (partition by date order by code) as code2 
+        ,row_number() over (partition by date order by code) as code2
     from outcome
 ) as o on x.date = o.date
     and x.code = o.code2
@@ -624,16 +624,16 @@ left join (
 
 --Задание: 102
 
-select name 
+select name
 from passenger
 where id_psg in (
-    select id_psg 
+    select id_psg
     from pass_in_trip as pass
     join trip as t on pass.trip_no=t.trip_no
     group by id_psg
     having count(distinct case 
         when town_from <= town_to then town_from+town_to
-        else town_to+town_from 
+        else town_to+town_from
         end
     ) = 1
 )
@@ -651,7 +651,7 @@ from trip as t1
     ,trip as t2
     ,trip as t3
 where t2.trip_no > t1.trip_no
-    and t3.trip_no  >t2.trip_no
+    and t3.trip_no > t2.trip_no
 
 
 --Задание: 105
@@ -704,14 +704,14 @@ from (
 
 --Задание: 110
 
-select name 
+select name
 from passenger
 where id_psg in (
     select id_psg
-    from pass_in_trip as pass 
+    from pass_in_trip as pass
     join trip as t on pass.trip_no = t.trip_no
-    where datepart(dw, date) = 7 
-        and time_in < time_out 
+    where datepart(dw, date) = 7
+        and time_in < time_out
 )
 
 
